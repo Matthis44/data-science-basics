@@ -6,14 +6,15 @@ Portfolio of data science fundamentals covering NumPy, Pandas, and Scikit-learn 
 
 ## Tech Stack
 
-| Category | Libraries |
-|---|---|
-| **Numerical Computing** | `numpy` `scipy` |
-| **Data Manipulation** | `pandas` `geopandas` |
-| **Machine Learning** | `scikit-learn` |
-| **Visualization** | `matplotlib` `descartes` |
-| **Testing & Quality** | `pytest` `flake8` `pydocstyle` |
-| **CI/CD** | GitHub Actions |
+![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python)
+![NumPy](https://img.shields.io/badge/NumPy-013243?logo=numpy&logoColor=white)
+![SciPy](https://img.shields.io/badge/SciPy-8CAAE6?logo=scipy&logoColor=white)
+![Pandas](https://img.shields.io/badge/Pandas-150458?logo=pandas&logoColor=white)
+![GeoPandas](https://img.shields.io/badge/GeoPandas-139C5A?logo=python&logoColor=white)
+![scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?logo=scikit-learn&logoColor=white)
+![Matplotlib](https://img.shields.io/badge/Matplotlib-11557C?logo=python&logoColor=white)
+![Pytest](https://img.shields.io/badge/Pytest-0A9EDC?logo=pytest&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-2088FF?logo=github-actions&logoColor=white)
 
 ---
 
