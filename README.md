@@ -1,128 +1,71 @@
 # Data Science Basics
 
-Portfolio of data science fundamentals covering NumPy, Pandas, and Scikit-learn through structured assignments and reference notebooks.
+[![tests](https://github.com/Matthis44/data-science-basics/actions/workflows/tests.yml/badge.svg)](https://github.com/Matthis44/data-science-basics/actions/workflows/tests.yml)
+![Python](https://img.shields.io/badge/python-3.12-blue)
 
----
+Core Python data science skills (NumPy, pandas, scikit-learn) through tested assignments,
+two runnable notebooks and a set of algorithm exercises.
 
-## Tech Stack
+| | Content | Highlights |
+|---|---|---|
+| [`numpy/`](numpy/) | array indexing, numerical series | input validation, `pytest` |
+| [`pandas/`](pandas/) | French referendum results, 36,565 towns | multi-table joins, aggregation, choropleth map |
+| [`sklearn/`](sklearn/) | k-NN classifier and time-series cross-validator from scratch | scikit-learn API compliant (`check_estimator`) |
+| [`pandas_data_basics.ipynb`](pandas_data_basics.ipynb) | pandas tour on real and time-series data | selection, cleaning, merges, rolling volatility, resampling |
+| [`sklearn_ml_basics.ipynb`](sklearn_ml_basics.ipynb) | custom estimators and model selection | look-ahead bias in cross-validation, grid search over 12 models |
+| [`algorithms/`](algorithms/) | HackerRank problems | hashing, heaps, stacks, dynamic programming |
 
-![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python)
-![NumPy](https://img.shields.io/badge/NumPy-013243?logo=numpy&logoColor=white)
-![SciPy](https://img.shields.io/badge/SciPy-8CAAE6?logo=scipy&logoColor=white)
-![Pandas](https://img.shields.io/badge/Pandas-150458?logo=pandas&logoColor=white)
-![GeoPandas](https://img.shields.io/badge/GeoPandas-139C5A?logo=python&logoColor=white)
-![scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?logo=scikit-learn&logoColor=white)
-![Matplotlib](https://img.shields.io/badge/Matplotlib-11557C?logo=python&logoColor=white)
-![Pytest](https://img.shields.io/badge/Pytest-0A9EDC?logo=pytest&logoColor=white)
-![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-2088FF?logo=github-actions&logoColor=white)
+## Assignments
 
----
-
-## Project Structure
-
-```
-data-science-basics/
-├── numpy/                      # NumPy assignment
-│   ├── numpy_questions.py
-│   └── test_numpy_questions.py
-├── pandas/                     # Pandas assignment (French referendum analysis)
-│   ├── pandas_questions.py
-│   ├── test_pandas_questions.py
-│   └── data/                   # CSV + GeoJSON datasets
-├── sklearn/                    # Scikit-learn assignment
-│   ├── sklearn_questions.py
-│   └── test_sklearn_questions.py
-├── pandas_data_basics.ipynb   # Pandas reference notebook
-└── sklearn_ml_basics.ipynb    # Scikit-learn reference notebook
-```
-
----
-
-## Modules
+The three assignments come from the [x-datascience-datacamp](https://github.com/x-datascience-datacamp)
+course: the problem statements and the test suites are the course's (BSD licence, see
+[`LICENSE-assignments`](LICENSE-assignments)); the solutions are mine.
 
 ### NumPy
+- Position of the maximum of a 2-D array with `np.argmax` and `np.unravel_index`, with input
+  validation.
+- Approximation of π with the Wallis product.
 
-**Skills developed:**
-- Multi-dimensional array indexing with `np.argmax()` and `np.unravel_index()`
-- Mathematical series computation (Wallis product for π approximation)
-- Input validation and custom `ValueError` handling
-- Unit testing with `pytest`
+### pandas: French referendum analysis
 
----
+![Share of 'Choice A' by region](pandas/referendum_map.png)
 
-### Pandas — French Referendum Analysis
+- Join town-level results with the department and region reference tables. The department
+  codes are formatted differently in the two sources (`1` vs `01`), so they are normalised
+  before the join; overseas territories and citizens abroad are excluded.
+- Aggregate the 36,565 towns into 13 regions and compute the share of each answer.
+- Join with GeoJSON boundaries and draw the map with `geopandas`.
 
-Real-world data pipeline on French referendum results at town level (36,565 records across 13 regions).
+### scikit-learn: custom estimator and cross-validator
+- **`KNearestNeighbors`**: `fit` / `predict` / `score` built on `pairwise_distances` and majority
+  voting. It passes scikit-learn's `check_estimator` and gives the same predictions as
+  `KNeighborsClassifier` for k = 1, 3, 5, 7.
+- **`MonthlySplit`**: a cross-validator that trains on one month and tests on the next, so a
+  model is never evaluated on data older than its training set.
 
-**Skills developed:**
+## Notebooks
 
-| Task | Techniques |
-|---|---|
-| Data loading | `pd.read_csv()` with custom delimiters |
-| Table joining | `pd.merge()` with multi-key joins |
-| Data cleaning | `dropna()`, `drop_duplicates()`, boolean filtering |
-| Aggregation | `groupby()` + custom aggregation functions |
-| Geospatial mapping | `geopandas`, GeoJSON, choropleth maps |
+**`pandas_data_basics.ipynb`** — loading and inspection, index manipulation, boolean and
+label-based selection, `query`, cleaning (missing values, duplicates, types, binning),
+validated merges, named aggregations, pivot tables, and time series on a synthetic price
+series: returns, log returns, rolling mean and annualised volatility, monthly resampling.
 
-**Reference notebook** (`pandas_data_basics.ipynb`) also covers:
-- `iloc` / `loc` selection and filtering (`isin`, `between`, `str.contains`)
-- Type casting, `apply()`, lambda transformations
-- Time-series operations: `pct_change`, `rolling`, `resample`, `interpolate`
-- Merging strategies: inner / outer / right joins
-- `GridSearchCV` pipelines integrating preprocessing and classifiers
+**`sklearn_ml_basics.ipynb`** — checks the from-scratch k-NN against scikit-learn (accuracy,
+decision boundaries, speed); shows on a time series that **shuffled cross-validation makes two
+models look as good as a naive forecast, while month-by-month validation reveals they are 2.5 to
+3 times worse**; compares 7 classifiers and 5 regressors with pipelines and grid search.
 
----
+Both notebooks are saved with their outputs and run from top to bottom.
 
-### Scikit-learn — Custom Estimator & Cross-Validator
-
-From-scratch implementations that are fully compliant with the scikit-learn API.
-
-#### KNearestNeighbors Classifier
-
-Custom k-NN inheriting from `BaseEstimator` + `ClassifierMixin`:
-
-- `fit(X, y)` — store training data, validate with `check_X_y()`
-- `predict(X)` — pairwise Euclidean distances + majority voting via `np.argsort()`
-- `score(X, y)` — classification accuracy
-- Passes `check_estimator()` for full API compliance
-- Validated against `sklearn.neighbors.KNeighborsClassifier` for k ∈ {1, 3, 5, 7}
-
-#### MonthlySplit Cross-Validator
-
-Time-series aware cross-validator inheriting from `BaseCrossValidator`:
-
-- `get_n_splits()` — counts unique months in a `DatetimeIndex`
-- `split()` — yields consecutive monthly train/test index pairs, preserving temporal order
-- Compatible with both index-based and column-based datetime inputs
-- Supports shuffled data and multi-dimensional features
-
-**Skills developed:**
-- Scikit-learn API design patterns (BaseEstimator, ClassifierMixin, BaseCrossValidator)
-- Distance-based learning (`pairwise_distances`)
-- Time-series cross-validation design
-- Docstring conventions (`pydocstyle`)
-- PEP8 compliance (`flake8`)
-- CI/CD pipelines with GitHub Actions
-
----
-
-## Testing
-
-Each module includes a full `pytest` test suite and a GitHub Actions workflow that runs on every push:
+## Run it
 
 ```bash
-# Run tests for any module
-cd numpy && pytest test_numpy_questions.py
-cd pandas && pytest test_pandas_questions.py
-cd sklearn && pytest test_sklearn_questions.py
+pip install -r requirements.txt
+cd numpy && pytest && cd ..
+cd pandas && pytest && cd ..
+cd sklearn && pytest && cd ..
+cd algorithms && pytest && cd ..
+jupyter lab   # notebooks
 ```
 
----
-
-## Key Competencies
-
-- **Data Engineering** — ETL pipelines, merging, aggregation, time-series handling, missing value treatment
-- **Machine Learning** — Supervised learning (classification & regression), k-NN, SVM, Random Forest, Gradient Boosting, Logistic Regression, Ridge/Lasso/ElasticNet
-- **Model Evaluation** — Cross-validation, `GridSearchCV`, accuracy metrics, pipelines
-- **Geospatial Analysis** — GeoDataFrame operations, GeoJSON parsing, choropleth mapping
-- **Software Practices** — Unit testing, code quality enforcement, CI/CD, API-compliant custom implementations
+Every module is tested and linted (`flake8`) by GitHub Actions on each push.
