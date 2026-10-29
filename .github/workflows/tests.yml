@@ -1,0 +1,27 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        module: [numpy, pandas, sklearn, algorithms]
+    name: ${{ matrix.module }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt flake8 pydocstyle
+      - name: Tests
+        working-directory: ${{ matrix.module }}
+        env:
+          MPLBACKEND: Agg
+        run: pytest -q
+      - name: Code style
+        run: flake8 ${{ matrix.module }}
